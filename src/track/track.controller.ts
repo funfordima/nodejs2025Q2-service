@@ -12,12 +12,8 @@ import {
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { TrackService } from './track.service';
-import {
-  CreateTrackDto,
-  TrackDto,
-  TrackIdParamDto,
-  UpdateTrackDto,
-} from './track.model';
+import { CreateTrackDto, TrackDto, UpdateTrackDto } from './track.model';
+import { IdParamDto } from '../common/dto/id-param.dto';
 
 ApiTags('Tracks');
 @Controller('track')
@@ -44,8 +40,8 @@ export class TrackController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Get(':id')
-  getById(@Param() params: TrackIdParamDto) {
-    return this.trackService.findOne(params.id);
+  getById(@Param() { id }: IdParamDto) {
+    return this.trackService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update track info' })
@@ -54,8 +50,8 @@ export class TrackController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
-  update(@Param() params: TrackIdParamDto, @Body() dto: UpdateTrackDto) {
-    return this.trackService.update(params.id, dto);
+  update(@Param() { id }: IdParamDto, @Body() dto: UpdateTrackDto) {
+    return this.trackService.update(id, dto);
   }
 
   @ApiOperation({ summary: 'Delete track' })
@@ -65,7 +61,7 @@ export class TrackController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  delete(@Param() params: TrackIdParamDto) {
-    this.trackService.delete(params.id);
+  delete(@Param() { id }: IdParamDto) {
+    this.trackService.delete(id);
   }
 }

@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Trim } from 'class-sanitizer';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { randomUUID } from 'crypto';
 
 export interface IArtist {
@@ -60,10 +54,4 @@ export class UpdateArtistDto {
   @IsNotEmpty()
   @IsBoolean()
   grammy: boolean;
-}
-
-export class ArtistIdParamDto {
-  @ApiProperty({ example: randomUUID(), description: 'UUID V4' })
-  @IsUUID()
-  id: string;
 }

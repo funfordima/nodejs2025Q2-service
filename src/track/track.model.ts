@@ -91,9 +91,3 @@ export class UpdateTrackDto {
   @IsInt()
   duration: number;
 }
-
-export class TrackIdParamDto {
-  @ApiProperty({ example: randomUUID(), description: 'UUID V4' })
-  @IsUUID()
-  id: string;
-}

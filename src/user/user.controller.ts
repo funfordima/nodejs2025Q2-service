@@ -14,10 +14,10 @@ import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateUserDto,
   UpdatePasswordDto,
-  UserIdParamDto,
   UserResponseDto,
 } from './user.model';
 import { UserService } from './user.service';
+import { IdParamDto } from '../common/dto/id-param.dto';
 
 ApiTags('Users');
 @Controller('user')
@@ -44,8 +44,8 @@ export class UserController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Get(':id')
-  getById(@Param() params: UserIdParamDto) {
-    return this.userService.findOne(params.id);
+  getById(@Param() { id }: IdParamDto) {
+    return this.userService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update user password' })
@@ -55,8 +55,8 @@ export class UserController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
-  update(@Param() params: UserIdParamDto, @Body() dto: UpdatePasswordDto) {
-    return this.userService.update(params.id, dto);
+  update(@Param() { id }: IdParamDto, @Body() dto: UpdatePasswordDto) {
+    return this.userService.update(id, dto);
   }
 
   @ApiOperation({ summary: 'Delete user' })
@@ -66,7 +66,7 @@ export class UserController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  delete(@Param() params: UserIdParamDto) {
-    this.userService.delete(params.id);
+  delete(@Param() { id }: IdParamDto) {
+    this.userService.delete(id);
   }
 }

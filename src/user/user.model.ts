@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Trim } from 'class-sanitizer';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { randomUUID } from 'crypto';
 
 export interface IUser {
@@ -58,12 +58,6 @@ export class UpdatePasswordDto {
   @IsString()
   @Trim()
   readonly newPassword: string;
-}
-
-export class UserIdParamDto {
-  @ApiProperty({ example: randomUUID(), description: 'UUID V4' })
-  @IsUUID()
-  id: string;
 }
 
 export class UserResponseDto {

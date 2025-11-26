@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 
-import { artists, tracks } from '../database/db';
+import { albums, artists, tracks } from '../database/db';
 import { CreateArtistDto, IArtist, UpdateArtistDto } from './artist.model';
 
 @Injectable()
@@ -42,6 +42,7 @@ export class ArtistService {
     artists.splice(index, 1);
 
     tracks.filter((t) => t.artistId === id).forEach((t) => (t.artistId = null));
+    albums.filter((a) => a.artistId === id).forEach((t) => (t.artistId = null));
 
     return index;
   }

@@ -1,3 +1,4 @@
+import { Album } from 'src/album/entities/album.entity';
 import { IArtist } from '../artist/artist.model';
 import { ITrack } from '../track/track.model';
 import { IUser } from '../user/user.model';
@@ -5,3 +6,4 @@ import { IUser } from '../user/user.model';
 export const users: IUser[] = [];
 export const tracks: ITrack[] = [];
 export const artists: IArtist[] = [];
+export const albums: Album[] = [];
