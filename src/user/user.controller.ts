@@ -59,7 +59,7 @@ export class UserController {
     return this.userService.update(params.id, dto);
   }
 
-  @ApiOperation({ summary: 'Update user password' })
+  @ApiOperation({ summary: 'Delete user' })
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'User not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })

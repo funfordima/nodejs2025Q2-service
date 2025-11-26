@@ -31,7 +31,7 @@ export class TrackController {
     return this.trackService.findMany();
   }
 
-  @ApiOperation({ summary: 'Create new user' })
+  @ApiOperation({ summary: 'Create new track' })
   @ApiResponse({ status: 201, type: TrackDto })
   @Post()
   create(@Body() dto: CreateTrackDto) {
@@ -48,10 +48,9 @@ export class TrackController {
     return this.trackService.findOne(params.id);
   }
 
-  @ApiOperation({ summary: 'Update user password' })
+  @ApiOperation({ summary: 'Update track info' })
   @ApiResponse({ status: 200, type: TrackDto })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  @ApiResponse({ status: 403, description: 'Invalid credentials' })
+  @ApiResponse({ status: 404, description: 'Track not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
@@ -59,9 +58,9 @@ export class TrackController {
     return this.trackService.update(params.id, dto);
   }
 
-  @ApiOperation({ summary: 'Update user password' })
+  @ApiOperation({ summary: 'Delete track' })
   @ApiResponse({ status: 204 })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 404, description: 'Track not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
