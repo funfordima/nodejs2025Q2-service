@@ -9,7 +9,7 @@ const PORT: number = Number(process.env.PORT) || 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   const config = new DocumentBuilder()
     .setTitle('Nestjs REST API')
     .setDescription('Home Library Service')
@@ -27,6 +27,12 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  app.use((req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+
+    next();
+  });
 
   await app.listen(PORT);
 }

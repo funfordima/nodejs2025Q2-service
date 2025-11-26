@@ -11,52 +11,52 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { TrackService } from './track.service';
 import {
-  CreateUserDto,
-  UpdatePasswordDto,
-  UserIdParamDto,
-  UserResponseDto,
-} from './user.model';
-import { UserService } from './user.service';
+  CreateTrackDto,
+  TrackDto,
+  TrackIdParamDto,
+  UpdateTrackDto,
+} from './track.model';
 
-ApiTags('Users');
-@Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+ApiTags('Tracks');
+@Controller('track')
+export class TrackController {
+  constructor(private readonly trackService: TrackService) {}
 
-  @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ status: 200, type: [UserResponseDto] })
+  @ApiOperation({ summary: 'Get all tracks' })
+  @ApiResponse({ status: 200, type: [TrackDto] })
   @Get()
   getAll() {
-    return this.userService.findMany();
+    return this.trackService.findMany();
   }
 
   @ApiOperation({ summary: 'Create new user' })
-  @ApiResponse({ status: 201, type: UserResponseDto })
+  @ApiResponse({ status: 201, type: TrackDto })
   @Post()
-  create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto);
+  create(@Body() dto: CreateTrackDto) {
+    return this.trackService.create(dto);
   }
 
-  @ApiOperation({ summary: 'Get user by id' })
-  @ApiResponse({ status: 200, type: UserResponseDto })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiOperation({ summary: 'Get track by id' })
+  @ApiResponse({ status: 200, type: TrackDto })
+  @ApiResponse({ status: 404, description: 'Track not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Get(':id')
-  getById(@Param() params: UserIdParamDto) {
-    return this.userService.findOne(params.id);
+  getById(@Param() params: TrackIdParamDto) {
+    return this.trackService.findOne(params.id);
   }
 
   @ApiOperation({ summary: 'Update user password' })
-  @ApiResponse({ status: 200, type: UserResponseDto })
+  @ApiResponse({ status: 200, type: TrackDto })
   @ApiResponse({ status: 404, description: 'User not found' })
   @ApiResponse({ status: 403, description: 'Invalid credentials' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
-  update(@Param() params: UserIdParamDto, @Body() dto: UpdatePasswordDto) {
-    return this.userService.update(params.id, dto);
+  update(@Param() params: TrackIdParamDto, @Body() dto: UpdateTrackDto) {
+    return this.trackService.update(params.id, dto);
   }
 
   @ApiOperation({ summary: 'Update user password' })
@@ -66,7 +66,7 @@ export class UserController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  delete(@Param() params: UserIdParamDto) {
-    this.userService.delete(params.id);
+  delete(@Param() params: TrackIdParamDto) {
+    this.trackService.delete(params.id);
   }
 }
