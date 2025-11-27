@@ -12,7 +12,9 @@ import {
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ArtistService } from './artist.service';
-import { ArtistDto, CreateArtistDto, UpdateArtistDto } from './artist.model';
+import { Artist } from './entities/artist.entity';
+import { CreateArtistDto } from './dto/create-artist.dto';
+import { UpdateArtistDto } from './dto/update-artist.dto';
 import { IdParamDto } from '../common/dto/id-param.dto';
 
 ApiTags('Artists');
@@ -21,21 +23,21 @@ export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @ApiOperation({ summary: 'Get all artists' })
-  @ApiResponse({ status: 200, type: [ArtistDto] })
+  @ApiResponse({ status: 200, type: [Artist] })
   @Get()
   getAll() {
     return this.artistService.findMany();
   }
 
   @ApiOperation({ summary: 'Create new artist' })
-  @ApiResponse({ status: 201, type: ArtistDto })
+  @ApiResponse({ status: 201, type: Artist })
   @Post()
   create(@Body() dto: CreateArtistDto) {
     return this.artistService.create(dto);
   }
 
   @ApiOperation({ summary: 'Get single artist by id' })
-  @ApiResponse({ status: 200, type: ArtistDto })
+  @ApiResponse({ status: 200, type: Artist })
   @ApiResponse({ status: 404, description: 'Artist not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
@@ -45,7 +47,7 @@ export class ArtistController {
   }
 
   @ApiOperation({ summary: 'Update artist info' })
-  @ApiResponse({ status: 200, type: ArtistDto })
+  @ApiResponse({ status: 200, type: Artist })
   @ApiResponse({ status: 404, description: 'Artist not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })

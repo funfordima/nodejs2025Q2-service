@@ -2,16 +2,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 
 import { albums, artists, tracks } from '../database/db';
-import { CreateArtistDto, IArtist, UpdateArtistDto } from './artist.model';
+import { Artist } from './entities/artist.entity';
+import { CreateArtistDto } from './dto/create-artist.dto';
+import { UpdateArtistDto } from './dto/update-artist.dto';
 
 @Injectable()
 export class ArtistService {
-  findMany(): IArtist[] {
+  findMany(): Artist[] {
     return artists;
   }
 
-  findOne(id: string): IArtist {
-    const artist: IArtist | undefined = artists.find((a) => a.id === id);
+  findOne(id: string): Artist {
+    const artist: Artist | undefined = artists.find((a) => a.id === id);
 
     if (!artist) {
       throw new NotFoundException('Artist not found.');
@@ -20,8 +22,8 @@ export class ArtistService {
     return artist;
   }
 
-  create({ name, grammy }: CreateArtistDto): IArtist {
-    const artist: IArtist = {
+  create({ name, grammy }: CreateArtistDto): Artist {
+    const artist: Artist = {
       id: randomUUID(),
       name,
       grammy,
@@ -47,8 +49,8 @@ export class ArtistService {
     return index;
   }
 
-  update(id: string, { name, grammy }: UpdateArtistDto): IArtist {
-    const artist: IArtist | undefined = artists.find((a) => a.id === id);
+  update(id: string, { name, grammy }: UpdateArtistDto): Artist {
+    const artist: Artist | undefined = artists.find((a) => a.id === id);
 
     if (!artist) {
       throw new NotFoundException('User not found.');

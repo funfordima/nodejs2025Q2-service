@@ -2,16 +2,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 
 import { tracks } from '../database/db';
-import { CreateTrackDto, ITrack, UpdateTrackDto } from './track.model';
+import { Track } from './entity/track.entity';
+import { CreateTrackDto } from './dto/create-track.dto';
+import { UpdateTrackDto } from './dto/update-track.dto';
 
 @Injectable()
 export class TrackService {
-  findMany(): ITrack[] {
+  findMany(): Track[] {
     return tracks;
   }
 
-  findOne(id: string): ITrack {
-    const track: ITrack | undefined = tracks.find((t) => t.id === id);
+  findOne(id: string): Track {
+    const track: Track | undefined = tracks.find((t) => t.id === id);
 
     if (!track) {
       throw new NotFoundException('Track not found.');
@@ -20,8 +22,8 @@ export class TrackService {
     return track;
   }
 
-  create({ name, artistId, albumId, duration }: CreateTrackDto): ITrack {
-    const track: ITrack = {
+  create({ name, artistId, albumId, duration }: CreateTrackDto): Track {
+    const track: Track = {
       id: randomUUID(),
       name,
       artistId: artistId ?? null,
@@ -49,8 +51,8 @@ export class TrackService {
   update(
     id: string,
     { name, artistId, albumId, duration }: UpdateTrackDto,
-  ): ITrack {
-    const track: ITrack | undefined = tracks.find((t) => t.id === id);
+  ): Track {
+    const track: Track | undefined = tracks.find((t) => t.id === id);
 
     if (!track) {
       throw new NotFoundException('User not found.');
