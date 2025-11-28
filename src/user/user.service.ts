@@ -5,13 +5,10 @@ import {
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 
-import {
-  CreateUserDto,
-  IUser,
-  UpdatePasswordDto,
-  UserResponseDto,
-} from './user.model';
 import { users } from '../database/db';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { User, UserResponseDto } from './entity/user.entity';
 
 @Injectable()
 export class UserService {
@@ -26,7 +23,7 @@ export class UserService {
   }
 
   findOne(id: string): UserResponseDto {
-    const user: IUser = users.find((u) => u.id === id);
+    const user: User = users.find((u) => u.id === id);
 
     if (!user) {
       throw new NotFoundException('User not found.');
@@ -38,7 +35,7 @@ export class UserService {
   }
 
   create({ login, password }: CreateUserDto): UserResponseDto {
-    const user: IUser = {
+    const user: User = {
       id: randomUUID(),
       login,
       password,
@@ -76,7 +73,7 @@ export class UserService {
     id: string,
     { oldPassword, newPassword }: UpdatePasswordDto,
   ): UserResponseDto {
-    const user: IUser = users.find((u) => u.id === id);
+    const user: User = users.find((u) => u.id === id);
 
     if (!user) {
       throw new NotFoundException('User not found.');

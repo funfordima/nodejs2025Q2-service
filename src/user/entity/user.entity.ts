@@ -1,18 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Trim } from 'class-sanitizer';
-import { IsNotEmpty, IsString } from 'class-validator';
 import { randomUUID } from 'crypto';
 
-export interface IUser {
-  id: string; // uuid v4
-  login: string;
-  password: string;
-  version: number;
-  createdAt: number;
-  updatedAt: number;
-}
-
-export class UserDto implements IUser {
+export class User {
   @ApiProperty({ example: randomUUID(), description: 'UUID V4' })
   id: string;
 
@@ -30,34 +19,6 @@ export class UserDto implements IUser {
 
   @ApiProperty({ example: Date.now(), description: 'Updated at' })
   updatedAt: number;
-}
-
-export class CreateUserDto {
-  @ApiProperty({ example: 'test@test.com', description: 'User email' })
-  @IsNotEmpty()
-  @IsString()
-  @Trim()
-  readonly login: string;
-
-  @ApiProperty({ example: '123456789', description: "User's password" })
-  @IsNotEmpty()
-  @IsString()
-  @Trim()
-  readonly password: string;
-}
-
-export class UpdatePasswordDto {
-  @ApiProperty({ example: '123456789', description: "User's old password" })
-  @IsNotEmpty()
-  @IsString()
-  @Trim()
-  readonly oldPassword: string;
-
-  @ApiProperty({ example: '987654321', description: "User's new password" })
-  @IsNotEmpty()
-  @IsString()
-  @Trim()
-  readonly newPassword: string;
 }
 
 export class UserResponseDto {

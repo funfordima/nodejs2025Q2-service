@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 
-import { albums, artists, tracks } from '../database/db';
+import { albums, artists, favorites, tracks } from '../database/db';
 import { Artist } from './entities/artist.entity';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
@@ -34,8 +34,8 @@ export class ArtistService {
     return artist;
   }
 
-  delete(id: string): number {
-    const index = artists.findIndex((a) => a.id === id);
+  delete(artistId: string): number {
+    const index = artists.findIndex((a) => a.id === artistId);
 
     if (index === -1) {
       throw new NotFoundException('Artist not found.');
@@ -43,8 +43,20 @@ export class ArtistService {
 
     artists.splice(index, 1);
 
-    tracks.filter((t) => t.artistId === id).forEach((t) => (t.artistId = null));
-    albums.filter((a) => a.artistId === id).forEach((t) => (t.artistId = null));
+    tracks
+      .filter((t) => t.artistId === artistId)
+      .forEach((t) => (t.artistId = null));
+    albums
+      .filter((a) => a.artistId === artistId)
+      .forEach((t) => (t.artistId = null));
+
+    const artistIndex: number = favorites.artists.findIndex(
+      (id) => id === artistId,
+    );
+
+    if (artistIndex !== -1) {
+      favorites.artists.splice(artistIndex, 1);
+    }
 
     return index;
   }

@@ -13,12 +13,15 @@ import { Artist } from '../artist/entities/artist.entity';
 @Injectable()
 export class FavoritesService {
   findAll(): FavoritesResponse {
-    const favoriteArtists: FavoritesResponse['artists'] =
-      favorites.artists.map((id) => artists.find((a) => a.id === id)).filter((a) => !!a);
-    const favoriteAlbums: FavoritesResponse['albums'] =
-      favorites.albums.map((id) => albums.find((a) => a.id === id)).filter((a) => !!a);
-    const favoriteTracks: FavoritesResponse['tracks'] =
-      favorites.tracks.map((id) => tracks.find((t) => t.id === id)).filter((a) => !!a);
+    const favoriteArtists: FavoritesResponse['artists'] = favorites.artists
+      .map((id) => artists.find((a) => a.id === id))
+      .filter((a) => !!a);
+    const favoriteAlbums: FavoritesResponse['albums'] = favorites.albums
+      .map((id) => albums.find((a) => a.id === id))
+      .filter((a) => !!a);
+    const favoriteTracks: FavoritesResponse['tracks'] = favorites.tracks
+      .map((id) => tracks.find((t) => t.id === id))
+      .filter((a) => !!a);
 
     return {
       artists: favoriteArtists,
@@ -38,9 +41,7 @@ export class FavoritesService {
   }
 
   removeTrack(trackId: string): void {
-    const index: number = favorites.tracks.findIndex(
-      (id) => id === trackId,
-    );
+    const index: number = favorites.tracks.findIndex((id) => id === trackId);
 
     if (index === -1) {
       throw new NotFoundException('Track is not favorite.');
@@ -60,9 +61,7 @@ export class FavoritesService {
   }
 
   removeAlbum(albumId: string): void {
-    const index: number = favorites.albums.findIndex(
-      (id) => id === albumId,
-    );
+    const index: number = favorites.albums.findIndex((id) => id === albumId);
 
     if (index === -1) {
       throw new NotFoundException('Album is not favorite.');
@@ -82,9 +81,7 @@ export class FavoritesService {
   }
 
   removeArtist(artistId: string): void {
-    const index: number = favorites.artists.findIndex(
-      (id) => id === artistId,
-    );
+    const index: number = favorites.artists.findIndex((id) => id === artistId);
 
     if (index === -1) {
       throw new NotFoundException('Artist is not favorite.');

@@ -11,13 +11,11 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import {
-  CreateUserDto,
-  UpdatePasswordDto,
-  UserResponseDto,
-} from './user.model';
 import { UserService } from './user.service';
 import { IdParamDto } from '../common/dto/id-param.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UserResponseDto } from './entity/user.entity';
 
 ApiTags('Users');
 @Controller('user')
