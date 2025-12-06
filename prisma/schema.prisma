@@ -16,15 +16,15 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
 
-  login     String
+  login     String   @unique
 
   password  String
 
   version   Int      @default(1)
 
-  createdAt Int      @default(1)
+  createdAt DateTime @default(now())
 
-  updatedAt Int      @default(1)
+  updatedAt DateTime @updatedAt
 }
 
 model Artist {
@@ -35,6 +35,8 @@ model Artist {
   grammy    Boolean  @default(false)
 
   albums    Album[]
+
+  track   Track[]
 }
 
 model Album {
@@ -47,4 +49,16 @@ model Album {
   artistId  String?
 
   artist    Artist?  @relation(fields: [artistId], references: [id], onDelete: SetNull)
+
+  tracks   Track[]
+}
+
+model Track {
+  id       String  @id @default(uuid())
+  name     String
+  duration Int
+  artistId String?
+  albumId  String?
+  artist   Artist?   @relation(fields: [artistId], references: [id], onDelete: SetNull)
+  album    Album?    @relation(fields: [albumId], references: [id], onDelete: SetNull)
 }

@@ -14,8 +14,8 @@ import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { IdParamDto } from '../common/dto/id-param.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdatePasswordDto } from './dto/update-password.dto';
 import { User } from './entity/user.entity';
+import { UpdateUserDto } from './dto/update-password.dto';
 
 ApiTags('Users');
 @Controller('user')
@@ -53,7 +53,7 @@ export class UserController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
-  async update(@Param() { id }: IdParamDto, @Body() dto: UpdatePasswordDto) {
+  async update(@Param() { id }: IdParamDto, @Body() dto: UpdateUserDto) {
     return await this.userService.update(id, dto);
   }
 

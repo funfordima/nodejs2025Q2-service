@@ -25,15 +25,15 @@ export class TrackController {
   @ApiOperation({ summary: 'Get all tracks' })
   @ApiResponse({ status: 200, type: [Track] })
   @Get()
-  getAll() {
-    return this.trackService.findMany();
+  async getAll() {
+    return await this.trackService.findMany();
   }
 
   @ApiOperation({ summary: 'Create new track' })
   @ApiResponse({ status: 201, type: Track })
   @Post()
-  create(@Body() dto: CreateTrackDto) {
-    return this.trackService.create(dto);
+  async create(@Body() dto: CreateTrackDto) {
+    return await this.trackService.create(dto);
   }
 
   @ApiOperation({ summary: 'Get track by id' })
@@ -42,8 +42,8 @@ export class TrackController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Get(':id')
-  getById(@Param() { id }: IdParamDto) {
-    return this.trackService.findOne(id);
+  async getById(@Param() { id }: IdParamDto) {
+    return await this.trackService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update track info' })
@@ -52,8 +52,8 @@ export class TrackController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
-  update(@Param() { id }: IdParamDto, @Body() dto: UpdateTrackDto) {
-    return this.trackService.update(id, dto);
+  async update(@Param() { id }: IdParamDto, @Body() dto: UpdateTrackDto) {
+    return await this.trackService.update(id, dto);
   }
 
   @ApiOperation({ summary: 'Delete track' })
@@ -63,7 +63,7 @@ export class TrackController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  delete(@Param() { id }: IdParamDto) {
-    this.trackService.remove(id);
+  async delete(@Param() { id }: IdParamDto) {
+    await this.trackService.remove(id);
   }
 }

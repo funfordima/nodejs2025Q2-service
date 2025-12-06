@@ -25,15 +25,15 @@ export class ArtistController {
   @ApiOperation({ summary: 'Get all artists' })
   @ApiResponse({ status: 200, type: [Artist] })
   @Get()
-  getAll() {
-    return this.artistService.findMany();
+  async getAll() {
+    return await this.artistService.findMany();
   }
 
   @ApiOperation({ summary: 'Create new artist' })
   @ApiResponse({ status: 201, type: Artist })
   @Post()
-  create(@Body() dto: CreateArtistDto) {
-    return this.artistService.create(dto);
+  async create(@Body() dto: CreateArtistDto) {
+    return await this.artistService.create(dto);
   }
 
   @ApiOperation({ summary: 'Get single artist by id' })
@@ -42,8 +42,8 @@ export class ArtistController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Get(':id')
-  getById(@Param() { id }: IdParamDto) {
-    return this.artistService.findOne(id);
+  async getById(@Param() { id }: IdParamDto) {
+    return await this.artistService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update artist info' })
@@ -52,8 +52,8 @@ export class ArtistController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
-  update(@Param() { id }: IdParamDto, @Body() dto: UpdateArtistDto) {
-    return this.artistService.update(id, dto);
+  async update(@Param() { id }: IdParamDto, @Body() dto: UpdateArtistDto) {
+    return await this.artistService.update(id, dto);
   }
 
   @ApiOperation({ summary: 'Delete artist and references' })
@@ -63,7 +63,7 @@ export class ArtistController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  delete(@Param() { id }: IdParamDto) {
-    this.artistService.delete(id);
+  async delete(@Param() { id }: IdParamDto) {
+    await this.artistService.delete(id);
   }
 }
