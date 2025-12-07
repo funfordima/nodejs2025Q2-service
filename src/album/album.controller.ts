@@ -25,15 +25,15 @@ export class AlbumController {
   @ApiOperation({ summary: 'Create new album' })
   @ApiResponse({ status: 201, type: Album })
   @Post()
-  create(@Body() createAlbumDto: CreateAlbumDto) {
-    return this.albumService.create(createAlbumDto);
+  async create(@Body() createAlbumDto: CreateAlbumDto) {
+    return await this.albumService.create(createAlbumDto);
   }
 
   @ApiOperation({ summary: 'Get all albums' })
   @ApiResponse({ status: 200, type: [Album] })
   @Get()
-  findAll() {
-    return this.albumService.findAll();
+  async findAll() {
+    return await this.albumService.findAll();
   }
 
   @ApiOperation({ summary: 'Get single album by id' })
@@ -42,8 +42,8 @@ export class AlbumController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Get(':id')
-  findOne(@Param() { id }: IdParamDto) {
-    return this.albumService.findOne(id);
+  async findOne(@Param() { id }: IdParamDto) {
+    return await this.albumService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update album info' })
@@ -52,8 +52,11 @@ export class AlbumController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
-  update(@Param() { id }: IdParamDto, @Body() updateAlbumDto: UpdateAlbumDto) {
-    return this.albumService.update(id, updateAlbumDto);
+  async update(
+    @Param() { id }: IdParamDto,
+    @Body() updateAlbumDto: UpdateAlbumDto,
+  ) {
+    return await this.albumService.update(id, updateAlbumDto);
   }
 
   @ApiOperation({ summary: 'Delete album and references' })
@@ -64,7 +67,7 @@ export class AlbumController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   @Delete(':id')
-  remove(@Param() { id }: IdParamDto) {
-    return this.albumService.remove(id);
+  async remove(@Param() { id }: IdParamDto) {
+    return await this.albumService.remove(id);
   }
 }

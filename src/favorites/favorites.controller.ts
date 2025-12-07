@@ -21,8 +21,8 @@ export class FavoritesController {
   @ApiOperation({ summary: 'Get all favorites' })
   @ApiResponse({ status: 200, type: FavoritesResponse })
   @Get()
-  findAll() {
-    return this.favoritesService.findAll();
+  async findAll() {
+    return await this.favoritesService.findAll();
   }
 
   @ApiOperation({ summary: 'Add track to the favorites' })
@@ -32,8 +32,8 @@ export class FavoritesController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.CREATED)
   @Post('track/:id')
-  addTrack(@Param() { id }: IdParamDto) {
-    return this.favoritesService.addTrack(id);
+  async addTrack(@Param() { id }: IdParamDto) {
+    return await this.favoritesService.addTrack(id);
   }
 
   @ApiOperation({ summary: 'Delete track from favorites' })
@@ -43,8 +43,8 @@ export class FavoritesController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('track/:id')
-  removeTrack(@Param() { id }: IdParamDto) {
-    return this.favoritesService.removeTrack(id);
+  async removeTrack(@Param() { id }: IdParamDto) {
+    return await this.favoritesService.removeTrack(id);
   }
 
   @ApiOperation({ summary: 'Add artist to the favorites' })
@@ -54,8 +54,8 @@ export class FavoritesController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.CREATED)
   @Post('artist/:id')
-  addArtist(@Param() { id }: IdParamDto) {
-    return this.favoritesService.addArtist(id);
+  async addArtist(@Param() { id }: IdParamDto) {
+    return await this.favoritesService.addArtist(id);
   }
 
   @ApiOperation({ summary: 'Delete artist from favorites' })
@@ -65,8 +65,8 @@ export class FavoritesController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('artist/:id')
-  removeArtist(@Param() { id }: IdParamDto) {
-    return this.favoritesService.removeArtist(id);
+  async removeArtist(@Param() { id }: IdParamDto) {
+    return await this.favoritesService.removeArtist(id);
   }
 
   @ApiOperation({ summary: 'Add album to the favorites' })
@@ -76,8 +76,8 @@ export class FavoritesController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.CREATED)
   @Post('album/:id')
-  addAlbum(@Param() { id }: IdParamDto) {
-    return this.favoritesService.addAlbum(id);
+  async addAlbum(@Param() { id }: IdParamDto) {
+    return await this.favoritesService.addAlbum(id);
   }
 
   @ApiOperation({ summary: 'Delete album from favorites' })
@@ -87,7 +87,7 @@ export class FavoritesController {
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('album/:id')
-  removeAlbum(@Param() { id }: IdParamDto) {
-    return this.favoritesService.removeAlbum(id);
+  async removeAlbum(@Param() { id }: IdParamDto) {
+    return await this.favoritesService.removeAlbum(id);
   }
 }

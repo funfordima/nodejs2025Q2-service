@@ -1,19 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 
-import { albums, artists, favorites, tracks } from '../database/db';
 import { Artist } from './entities/artist.entity';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ArtistService {
-  findMany(): Artist[] {
-    return artists;
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async findMany(): Promise<Artist[]> {
+    return await this.prismaService.artist.findMany();
   }
 
-  findOne(id: string): Artist {
-    const artist: Artist | undefined = artists.find((a) => a.id === id);
+  async findOne(id: string): Promise<Artist> {
+    const artist: Artist | undefined =
+      await this.prismaService.artist.findUnique({ where: { id } });
 
     if (!artist) {
       throw new NotFoundException('Artist not found.');
@@ -22,55 +24,34 @@ export class ArtistService {
     return artist;
   }
 
-  create({ name, grammy }: CreateArtistDto): Artist {
-    const artist: Artist = {
-      id: randomUUID(),
-      name,
-      grammy,
-    };
-
-    artists.push(artist);
-
-    return artist;
+  async create(data: CreateArtistDto): Promise<Artist> {
+    return await this.prismaService.artist.create({ data });
   }
 
-  delete(artistId: string): number {
-    const index = artists.findIndex((a) => a.id === artistId);
+  async delete(id: string): Promise<void> {
+    const artist: Artist | undefined =
+      await this.prismaService.artist.findUnique({ where: { id } });
 
-    if (index === -1) {
+    if (!artist) {
       throw new NotFoundException('Artist not found.');
     }
 
-    artists.splice(index, 1);
-
-    tracks
-      .filter((t) => t.artistId === artistId)
-      .forEach((t) => (t.artistId = null));
-    albums
-      .filter((a) => a.artistId === artistId)
-      .forEach((t) => (t.artistId = null));
-
-    const artistIndex: number = favorites.artists.findIndex(
-      (id) => id === artistId,
-    );
-
-    if (artistIndex !== -1) {
-      favorites.artists.splice(artistIndex, 1);
-    }
-
-    return index;
+    await this.prismaService.artist.delete({
+      where: { id },
+    });
   }
 
-  update(id: string, { name, grammy }: UpdateArtistDto): Artist {
-    const artist: Artist | undefined = artists.find((a) => a.id === id);
+  async update(id: string, data: UpdateArtistDto): Promise<Artist> {
+    const artist: Artist | undefined =
+      await this.prismaService.artist.findUnique({ where: { id } });
 
     if (!artist) {
       throw new NotFoundException('User not found.');
     }
 
-    artist.name = name ?? artist.name;
-    artist.grammy = grammy ?? artist.grammy;
-
-    return artist;
+    return await this.prismaService.artist.update({
+      where: { id },
+      data,
+    });
   }
 }
