@@ -9,6 +9,8 @@
     "node": ">=22.14.0"
   },
   "scripts": {
+    "prisma:migrate": "npx prisma migrate dev && npx prisma generate",
+    "docker": "docker-compose -f ./docker-compose.yml up --build",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

@@ -4,12 +4,21 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
 import { PrismaService } from '../prisma/prisma.service';
+import { Artist } from '@prisma/client';
 
 @Injectable()
 export class AlbumService {
   constructor(private readonly prismaService: PrismaService) {}
   
   async create(data: CreateAlbumDto): Promise<Album> {
+    if (!!data.artistId) {
+      const artist: Artist | undefined = await this.prismaService.artist.findUnique({ where: { id: data.artistId }});
+    
+      if (!artist) {
+        throw new NotFoundException('Artist not found.');
+      }
+    }
+
     return await this.prismaService.album.create({ data });
   }
 

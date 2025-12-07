@@ -4,6 +4,7 @@ import { Track } from './entity/track.entity';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { Album, Artist } from '@prisma/client';
 
 @Injectable()
 export class TrackService {
@@ -24,6 +25,22 @@ export class TrackService {
   }
 
   async create(data: CreateTrackDto): Promise<Track> {
+    if (!!data.artistId) {
+      const artist: Artist | undefined = await this.prismaService.artist.findUnique({ where: { id: data.artistId }});
+    
+      if (!artist) {
+        throw new NotFoundException('Artist not found.');
+      }
+    }
+    
+    if (!!data.albumId) {
+      const album: Album | undefined = await this.prismaService.album.findUnique({ where: { id: data.albumId }});
+      
+      if (!album) {
+        throw new NotFoundException('Album not found.');
+      }
+    }
+
     return await this.prismaService.track.create({ data });
   }
 
