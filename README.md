@@ -8,23 +8,54 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/funfordima/nodejs2025Q2-service
 ```
 
 ## Installing NPM modules
 
 ```
-npm install
+npm ci or npm ci --legacy-peer-deps
 ```
 
-## Running application
+## Run migrations
+
+```
+npm run prisma:migrate
+```
+
+## Postgres initialization in Docker container for development
+
+```
+npm run docker:db
+```
+
+## Running application for development
 
 ```
 npm start
 ```
 
+## Running application in the Docker container
+
+```
+npm run docker
+```
+
+## Running Docker vulnerability scan
+
+```
+npm run docker:scan
+```
+
+## Encounter any issues with Docker?
+
+```
+npm run docker:down
+```
+
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+in your browser Swagger documentation by typing http://localhost:4000/api/docs.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
