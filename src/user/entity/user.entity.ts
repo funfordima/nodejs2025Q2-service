@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { randomUUID } from 'crypto';
 
 export class User {
@@ -32,8 +33,10 @@ export class UserResponseDto {
   version: number;
 
   @ApiProperty({ example: Date.now(), description: 'Created at' })
+  @Transform(({ value }) => Number(value))
   createdAt: number;
 
   @ApiProperty({ example: Date.now(), description: 'Updated at' })
+  @Transform(({ value }) => Number(value))
   updatedAt: number;
 }

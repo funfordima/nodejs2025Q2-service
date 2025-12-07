@@ -1,9 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entity/user.entity';
 import { PrismaService } from '../prisma/prisma.service';
-import { UpdateUserDto } from './dto/update-password.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UserService {
@@ -18,10 +18,12 @@ export class UserService {
         createdAt: true,
         updatedAt: true,
       },
-    })).map(user => ({
+    }))
+    
+    .map(user => ({
         ...user,
-        createdAt: new Date(user.createdAt).getTime(),
-        updatedAt: new Date(user.updatedAt).getTime(),
+      createdAt: Number(user.createdAt),
+      updatedAt: Number(user.updatedAt),
       }));
 
   }
@@ -44,24 +46,39 @@ export class UserService {
 
     return {
       ...user,
-      createdAt: new Date(user.createdAt).getTime(),
-      updatedAt: new Date(user.updatedAt).getTime(),
+      createdAt: Number(user.createdAt),
+      updatedAt: Number(user.updatedAt),
     };
   }
 
   async create(data: CreateUserDto): Promise<Omit<User, 'password'>> {
     const existing = await this.prismaService.user.findUnique({
       where: { login: data.login },
+      select: {
+        id: true,
+        login: true,
+        version: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     if (existing) {
-      throw new BadRequestException('User already exists.');
+      return {
+        ...existing,
+        createdAt: Number(existing.createdAt),
+        updatedAt: Number(existing.updatedAt),
+      };
     }
+    
+    const currentTime = Date.now();
 
     const user = await this.prismaService.user.create({
       data : { 
         login: data.login,
         password: data.password,
+        createdAt: currentTime,
+        updatedAt: currentTime,
       },
       select: {
         id: true,
@@ -74,8 +91,8 @@ export class UserService {
     
     return {
       ...user,
-      createdAt: new Date(user.createdAt).getTime(),
-      updatedAt: new Date(user.updatedAt).getTime(),
+      createdAt: Number(user.createdAt),
+      updatedAt: Number(user.updatedAt),
     };
   }
 
@@ -93,7 +110,7 @@ export class UserService {
 
   async update(
     id: string,
-    dto: UpdateUserDto,
+    dto: UpdatePasswordDto,
   ): Promise<Omit<User, 'password'>> {
     const user = await this.prismaService.user.findUnique({ where: { id } });
 
@@ -101,15 +118,16 @@ export class UserService {
       throw new NotFoundException('User not found.');
     }
 
-    if (user.password == dto.password) {
+    if (user.password != dto.oldPassword) {
       throw new ForbiddenException('Bad request.');
     }
 
     const updatedUser = await this.prismaService.user.update({
       where: { id },
       data : { 
-        password: dto.password,
+        password: dto.newPassword,
         version: { increment: 1 },
+        updatedAt: Date.now(),
       },
       select: {
         id: true,
@@ -122,8 +140,8 @@ export class UserService {
 
     return {
       ...updatedUser,
-      createdAt: new Date(updatedUser.createdAt).getTime(),
-      updatedAt: new Date(updatedUser.updatedAt).getTime(),
+      createdAt: Number(updatedUser.createdAt),
+      updatedAt: Number(updatedUser.updatedAt),
     };
   }
 }

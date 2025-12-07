@@ -22,9 +22,9 @@ model User {
 
   version Int @default(1)
 
-  createdAt DateTime @default(now())
+  createdAt BigInt
 
-  updatedAt DateTime @updatedAt
+  updatedAt BigInt
 }
 
 model Artist {

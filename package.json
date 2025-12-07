@@ -11,6 +11,7 @@
   "scripts": {
     "prisma:migrate": "npx prisma migrate dev && npx prisma generate",
     "docker": "docker-compose -f ./docker-compose.yml up --build",
+    "docker:down": "docker-compose down -v",
     "docker:db": "docker-compose -f ./docker-compose.yml up -d postgres",
     "docker:scan": "docker build -t nest-api:latest . && docker scout cves nest-api:latest && docker build -t postgres:latest . && docker scout cves postgres:latest",
     "prebuild": "rimraf dist",
