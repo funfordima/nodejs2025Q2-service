@@ -17,16 +17,16 @@ git clone https://github.com/funfordima/nodejs2025Q2-service
 npm ci or npm ci --legacy-peer-deps
 ```
 
-## Run migrations
-
-```
-npm run prisma:migrate
-```
-
 ## Postgres initialization in Docker container for development
 
 ```
 npm run docker:db
+```
+
+## Run migrations
+
+```
+npm run prisma:migrate
 ```
 
 ## Running application for development
