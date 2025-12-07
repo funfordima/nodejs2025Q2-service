@@ -38,13 +38,19 @@ npm start
 ## Running application in the Docker container
 
 ```
-npm run docker
+npm run docker:dev
+```
+
+## Running application from DockerHub image
+
+```
+npm run docker:prod
 ```
 
 ## Running Docker vulnerability scan
 
 ```
-npm run docker:scan
+npm run docker:scan (docker hub image)    or npm run docker:scan:dev (build image)
 ```
 
 ## Encounter any issues with Docker?
