@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entity/user.entity';
@@ -8,24 +12,23 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
-  
+
   async findMany(): Promise<Omit<User, 'password'>[]> {
-    return (await this.prismaService.user.findMany({
-      select: {
-        id: true,
-        login: true,
-        version: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    }))
-    
-    .map(user => ({
-        ...user,
+    return (
+      await this.prismaService.user.findMany({
+        select: {
+          id: true,
+          login: true,
+          version: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      })
+    ).map((user) => ({
+      ...user,
       createdAt: Number(user.createdAt),
       updatedAt: Number(user.updatedAt),
-      }));
-
+    }));
   }
 
   async findOne(id: string): Promise<Omit<User, 'password'>> {
@@ -70,11 +73,11 @@ export class UserService {
         updatedAt: Number(existing.updatedAt),
       };
     }
-    
+
     const currentTime = Date.now();
 
     const user = await this.prismaService.user.create({
-      data : { 
+      data: {
         login: data.login,
         password: data.password,
         createdAt: currentTime,
@@ -88,7 +91,7 @@ export class UserService {
         updatedAt: true,
       },
     });
-    
+
     return {
       ...user,
       createdAt: Number(user.createdAt),
@@ -124,7 +127,7 @@ export class UserService {
 
     const updatedUser = await this.prismaService.user.update({
       where: { id },
-      data : { 
+      data: {
         password: dto.newPassword,
         version: { increment: 1 },
         updatedAt: Date.now(),

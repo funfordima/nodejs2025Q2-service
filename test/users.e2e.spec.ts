@@ -151,9 +151,6 @@ describe('Users (e2e)', () => {
         .set(commonHeaders)
         .send(createUserDto);
 
-        // const {} = 
-        console.log(creationResponse.body, creationResponse.status);
-
       const { id: createdId } = creationResponse.body;
 
       expect(creationResponse.status).toBe(StatusCodes.CREATED);

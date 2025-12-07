@@ -9,11 +9,14 @@ import { Artist } from '@prisma/client';
 @Injectable()
 export class AlbumService {
   constructor(private readonly prismaService: PrismaService) {}
-  
+
   async create(data: CreateAlbumDto): Promise<Album> {
     if (!!data.artistId) {
-      const artist: Artist | undefined = await this.prismaService.artist.findUnique({ where: { id: data.artistId }});
-    
+      const artist: Artist | undefined =
+        await this.prismaService.artist.findUnique({
+          where: { id: data.artistId },
+        });
+
       if (!artist) {
         throw new NotFoundException('Artist not found.');
       }
@@ -26,8 +29,10 @@ export class AlbumService {
     return await this.prismaService.album.findMany();
   }
 
-  async findOne(id: string): Promise<Album>  {
-    const album: Album | undefined = await this.prismaService.album.findUnique({ where: { id }});
+  async findOne(id: string): Promise<Album> {
+    const album: Album | undefined = await this.prismaService.album.findUnique({
+      where: { id },
+    });
 
     if (!album) {
       throw new NotFoundException('Album not found');
@@ -36,8 +41,10 @@ export class AlbumService {
     return album;
   }
 
-  async update(id: string, data: UpdateAlbumDto): Promise<Album>  {
-    const album: Album | undefined = await this.prismaService.album.findUnique({ where: { id }});
+  async update(id: string, data: UpdateAlbumDto): Promise<Album> {
+    const album: Album | undefined = await this.prismaService.album.findUnique({
+      where: { id },
+    });
 
     if (!album) {
       throw new NotFoundException('Album not found.');
@@ -49,14 +56,16 @@ export class AlbumService {
     });
   }
 
-  async remove(id: string): Promise<void>  {
-    const album: Album | undefined = await this.prismaService.album.findUnique({ where: { id }});
+  async remove(id: string): Promise<void> {
+    const album: Album | undefined = await this.prismaService.album.findUnique({
+      where: { id },
+    });
 
     if (!album) {
       throw new NotFoundException('Album not found.');
     }
 
-   await this.prismaService.album.delete({
+    await this.prismaService.album.delete({
       where: { id },
     });
   }

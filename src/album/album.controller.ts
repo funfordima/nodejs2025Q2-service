@@ -52,7 +52,10 @@ export class AlbumController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiParam({ name: 'id', required: true, type: 'string' })
   @Put(':id')
-  async update(@Param() { id }: IdParamDto, @Body() updateAlbumDto: UpdateAlbumDto) {
+  async update(
+    @Param() { id }: IdParamDto,
+    @Body() updateAlbumDto: UpdateAlbumDto,
+  ) {
     return await this.albumService.update(id, updateAlbumDto);
   }
 

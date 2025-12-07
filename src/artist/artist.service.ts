@@ -14,7 +14,8 @@ export class ArtistService {
   }
 
   async findOne(id: string): Promise<Artist> {
-    const artist: Artist | undefined = await this.prismaService.artist.findUnique({ where: { id }});
+    const artist: Artist | undefined =
+      await this.prismaService.artist.findUnique({ where: { id } });
 
     if (!artist) {
       throw new NotFoundException('Artist not found.');
@@ -28,8 +29,9 @@ export class ArtistService {
   }
 
   async delete(id: string): Promise<void> {
-    const artist: Artist | undefined = await this.prismaService.artist.findUnique({ where: { id }});
-    
+    const artist: Artist | undefined =
+      await this.prismaService.artist.findUnique({ where: { id } });
+
     if (!artist) {
       throw new NotFoundException('Artist not found.');
     }
@@ -40,7 +42,8 @@ export class ArtistService {
   }
 
   async update(id: string, data: UpdateArtistDto): Promise<Artist> {
-    const artist: Artist | undefined = await this.prismaService.artist.findUnique({ where: { id }});
+    const artist: Artist | undefined =
+      await this.prismaService.artist.findUnique({ where: { id } });
 
     if (!artist) {
       throw new NotFoundException('User not found.');

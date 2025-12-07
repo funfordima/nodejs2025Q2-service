@@ -10,7 +10,7 @@ import { FavoritesResponse } from './entities/favorite.entity';
 @Injectable()
 export class FavoritesService {
   constructor(private readonly prismaService: PrismaService) {}
-  
+
   async findAll(): Promise<FavoritesResponse> {
     const [artists, albums, tracks] = await Promise.all([
       this.prismaService.favoriteArtist.findMany({ select: { artist: true } }),
@@ -62,7 +62,7 @@ export class FavoritesService {
       if (e.code === 'P2002') {
         throw new UnprocessableEntityException('Album is already favorite.');
       }
-      
+
       throw e;
     }
   }
@@ -76,12 +76,16 @@ export class FavoritesService {
   }
 
   async addArtist(id: string) {
-    const artist = await this.prismaService.artist.findUnique({ where: { id } });
+    const artist = await this.prismaService.artist.findUnique({
+      where: { id },
+    });
 
     if (!artist) throw new UnprocessableEntityException('Artist not found.');
 
     try {
-      await this.prismaService.favoriteArtist.create({ data: { artistId: id } });
+      await this.prismaService.favoriteArtist.create({
+        data: { artistId: id },
+      });
     } catch (e) {
       if (e.code === 'P2002') {
         throw new UnprocessableEntityException('Artist is already favorite.');
@@ -92,7 +96,9 @@ export class FavoritesService {
 
   async removeArtist(id: string) {
     try {
-      await this.prismaService.favoriteArtist.delete({ where: { artistId: id } });
+      await this.prismaService.favoriteArtist.delete({
+        where: { artistId: id },
+      });
     } catch {
       throw new NotFoundException('Artist not found');
     }
