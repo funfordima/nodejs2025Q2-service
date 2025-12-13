@@ -6,6 +6,7 @@ import { ArtistModule } from './artist/artist.module';
 import { AlbumModule } from './album/album.module';
 import { CommonModule } from './common/common.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { FavoritesModule } from './favorites/favorites.module';
     AlbumModule,
     CommonModule,
     FavoritesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
