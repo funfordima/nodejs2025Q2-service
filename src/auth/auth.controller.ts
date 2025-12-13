@@ -2,9 +2,10 @@ import { Controller, Post, Body, HttpStatus, HttpCode } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { Auth } from './entities/auth.entity';
 import { RefreshDto } from './dto/refresh-auth.dto';
+import { User } from '../user/entity/user.entity';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 
 ApiTags('Authorization');
 @Controller('auth')
@@ -16,17 +17,17 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Incorrect login or password' })
   @Post('login')
-  async login(@Body() dto: CreateAuthDto) {
+  async login(@Body() dto: CreateUserDto) {
     return await this.authService.login(dto);
   }
 
   @ApiOperation({ summary: 'Signup a user' })
-  @ApiResponse({ status: 201 })
+  @ApiResponse({ status: 201, type: User })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 409, description: 'Conflict. Login already exists' })
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Body() dto: CreateAuthDto) {
+  async signup(@Body() dto: CreateUserDto) {
     return await this.authService.signup(dto);
   }
 
@@ -34,6 +35,7 @@ export class AuthController {
   @ApiResponse({ status: 200, type: Auth })
   @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
   @ApiResponse({ status: 403, description: 'Refresh token is invalid or expired' })
+  @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(@Body() dto: RefreshDto) {
     return await this.authService.refresh(dto);

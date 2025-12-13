@@ -1,10 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Trim } from "class-sanitizer";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 
 export class RefreshDto {
-  @ApiProperty({ example: 'Bearer <jwt_token>', description: 'Refresh JWT token' })
-  @IsNotEmpty()
+  @ApiProperty({
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+    description: 'Refresh JWT token',
+  })
+  @IsOptional()
   @IsString()
   @Trim()
   refreshToken: string;
