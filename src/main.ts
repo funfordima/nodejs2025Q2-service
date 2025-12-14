@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 import { CustomLoggerService } from './common/custom-logger/custom-logger.service';
+import { HttpExceptionFilter } from './common/http-exception.filter';
 
 const PORT: number = Number(process.env.PORT) || 4000;
 
@@ -46,6 +47,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
 
   app.use((req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
