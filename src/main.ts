@@ -48,6 +48,18 @@ async function bootstrap() {
     }),
   );
 
+  process.on('uncaughtException', (err) => {
+    logger.error('Uncaught Exception:', err.stack, 'Bootstrap');
+
+    process.exit(1);
+  });
+
+  process.on('unhandledRejection', (reason) => {
+    const errorMessage = reason instanceof Error ? reason.stack : reason.toString();
+
+    logger.error('Unhandled Rejection:', errorMessage, 'Bootstrap');
+  });
+
   app.useGlobalFilters(new HttpExceptionFilter(logger));
 
   app.use((req, res, next) => {
@@ -58,6 +70,6 @@ async function bootstrap() {
 
   await app.listen(PORT);
 
-  logger.debug(`This application is running on: ${await app.getUrl()}`, "Bootstrap");
+  logger.debug(`This application is running on: ${await app.getUrl()}`, 'Bootstrap');
 }
 bootstrap();
