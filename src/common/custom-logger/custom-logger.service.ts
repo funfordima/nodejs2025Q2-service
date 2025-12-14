@@ -13,11 +13,12 @@ import {
 } from '@nestjs/common';
 
 import { LogLevels } from '../enums/log-level.enum';
+import { LOG_LEVEL_PRIORITY } from '../constants/logging.constants';
 
 @Global()
 @Injectable()
 export class CustomLoggerService implements LoggerService {
-  private allowedLevels: Set<LogLevels> = new Set();
+  private readonly allowedLevels: Set<string>;
 
   private readonly logDir = join(process.cwd(), 'logs');
   private readonly logFile = join(this.logDir, 'app.log');
@@ -28,22 +29,18 @@ export class CustomLoggerService implements LoggerService {
       mkdirSync(this.logDir, { recursive: true });
     }
 
-    this.allowedLevels = new Set(
-      (process.env.LOG_LEVELS?.split(',') as LogLevels[]) ??
-        this.getDefaultLogLevels(),
-    );
-  }
+    const envLevel = process.env.LOG_LEVEL ?? 'log';
 
-  private getDefaultLogLevels(): LogLevels[] {
-    return process.env.NODE_ENV === 'production'
-      ? [LogLevels.ERROR, LogLevels.WARN, LogLevels.LOG]
-      : [
-          LogLevels.ERROR,
-          LogLevels.WARN,
-          LogLevels.LOG,
-          LogLevels.DEBUG,
-          LogLevels.VERBOSE,
-        ];
+    const maxPriority =
+      LOG_LEVEL_PRIORITY[envLevel] ?? LOG_LEVEL_PRIORITY.log;
+
+    this.allowedLevels = new Set(
+      Object.entries(LOG_LEVEL_PRIORITY)
+        .filter(([, priority]) => priority <= maxPriority)
+        .map(([level]) => level),
+    );
+
+    console.log(this.allowedLevels);
   }
 
   private async logToFile(
@@ -61,8 +58,6 @@ export class CustomLoggerService implements LoggerService {
       context,
       trace,
     });
-
-    // appendFileSync(this.logFile, logEntry + '\n');
 
     const writeStream = createWriteStream(this.logFile, { flags: 'a' });
 
@@ -112,7 +107,7 @@ export class CustomLoggerService implements LoggerService {
     if (this.allowedLevels.has(LogLevels.ERROR)) {
       this.logger?.error(message, trace, context) ?? console.error(message);
 
-      await this.logToFile(LogLevels.LOG, message, context, trace);
+      await this.logToFile(LogLevels.ERROR, message, context, trace);
     }
   }
 
@@ -120,7 +115,7 @@ export class CustomLoggerService implements LoggerService {
     if (this.allowedLevels.has(LogLevels.WARN)) {
       this.logger?.warn(message, context);
 
-      await this.logToFile(LogLevels.LOG, message, context);
+      await this.logToFile(LogLevels.WARN, message, context);
     }
   }
 
@@ -128,7 +123,7 @@ export class CustomLoggerService implements LoggerService {
     if (this.allowedLevels.has(LogLevels.DEBUG)) {
       this.logger?.debug(message, context);
 
-      await this.logToFile(LogLevels.LOG, message, context);
+      await this.logToFile(LogLevels.DEBUG, message, context);
     }
   }
 
@@ -136,7 +131,7 @@ export class CustomLoggerService implements LoggerService {
     if (this.allowedLevels.has(LogLevels.VERBOSE)) {
       this.logger?.verbose(message, context);
 
-      await this.logToFile(LogLevels.LOG, message, context);
+      await this.logToFile(LogLevels.VERBOSE, message, context);
     }
   }
 }
