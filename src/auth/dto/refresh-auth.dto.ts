@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Trim } from "class-sanitizer";
-import { IsOptional, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { Trim } from 'class-sanitizer';
+import { IsOptional, IsString } from 'class-validator';
 
 export class RefreshDto {
   @ApiProperty({

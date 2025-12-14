@@ -4,7 +4,13 @@ import { join } from 'path';
 import { existsSync, mkdirSync, createWriteStream } from 'fs';
 import { stat, rename, access, constants } from 'fs/promises';
 
-import { ConsoleLogger, Global, Injectable, LoggerService, Optional } from '@nestjs/common';
+import {
+  ConsoleLogger,
+  Global,
+  Injectable,
+  LoggerService,
+  Optional,
+} from '@nestjs/common';
 
 import { LogLevels } from '../enums/log-level.enum';
 
@@ -17,15 +23,14 @@ export class CustomLoggerService implements LoggerService {
   private readonly logFile = join(this.logDir, 'app.log');
   private readonly maxFileSizeKb = Number(process.env.LOG_FILE_SIZE_KB ?? 100);
 
-  constructor(
-    @Optional() private readonly logger?: ConsoleLogger,
-  ) {
+  constructor(@Optional() private readonly logger?: ConsoleLogger) {
     if (!existsSync(this.logDir)) {
       mkdirSync(this.logDir, { recursive: true });
     }
 
     this.allowedLevels = new Set(
-      (process.env.LOG_LEVELS?.split(',') as LogLevels[]) ?? this.getDefaultLogLevels(),
+      (process.env.LOG_LEVELS?.split(',') as LogLevels[]) ??
+        this.getDefaultLogLevels(),
     );
   }
 
@@ -93,7 +98,7 @@ export class CustomLoggerService implements LoggerService {
     } catch {
       return false;
     }
-  };
+  }
 
   async log(message: string, context?: string) {
     if (this.allowedLevels.has(LogLevels.LOG)) {

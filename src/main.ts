@@ -16,7 +16,7 @@ async function bootstrap() {
   });
 
   const logger = app.get(CustomLoggerService);
-  
+
   app.useLogger(logger);
 
   const config = new DocumentBuilder()
@@ -55,7 +55,8 @@ async function bootstrap() {
   });
 
   process.on('unhandledRejection', (reason) => {
-    const errorMessage = reason instanceof Error ? reason.stack : reason.toString();
+    const errorMessage =
+      reason instanceof Error ? reason.stack : reason.toString();
 
     logger.error('Unhandled Rejection:', errorMessage, 'Bootstrap');
   });
@@ -70,6 +71,9 @@ async function bootstrap() {
 
   await app.listen(PORT);
 
-  logger.debug(`This application is running on: ${await app.getUrl()}`, 'Bootstrap');
+  logger.debug(
+    `This application is running on: ${await app.getUrl()}`,
+    'Bootstrap',
+  );
 }
 bootstrap();

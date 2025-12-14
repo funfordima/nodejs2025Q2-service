@@ -15,8 +15,9 @@ import { SignOptions } from 'jsonwebtoken';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET_KEY || 'secret123123',
-      signOptions: { 
-        expiresIn: (process.env.TOKEN_EXPIRE_TIME || '1h') as SignOptions['expiresIn'],
+      signOptions: {
+        expiresIn: (process.env.TOKEN_EXPIRE_TIME ||
+          '1h') as SignOptions['expiresIn'],
       },
     }),
   ],

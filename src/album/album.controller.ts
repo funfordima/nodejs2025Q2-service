@@ -10,7 +10,13 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';

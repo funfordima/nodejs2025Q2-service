@@ -148,17 +148,17 @@ export class UserService {
     };
   }
 
-   async findOneByLogin(login: string): Promise<User | null> {
+  async findOneByLogin(login: string): Promise<User | null> {
     const user = await this.prismaService.user.findUnique({
       where: { login },
     });
 
-    return !user 
-      ? null 
+    return !user
+      ? null
       : {
-        ...user,
-        createdAt: Number(user.createdAt),
-        updatedAt: Number(user.updatedAt),
-      };
+          ...user,
+          createdAt: Number(user.createdAt),
+          updatedAt: Number(user.updatedAt),
+        };
   }
 }

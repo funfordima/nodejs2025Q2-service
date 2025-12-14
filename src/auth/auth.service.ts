@@ -2,7 +2,11 @@ import 'dotenv/config';
 import * as bcrypt from 'bcrypt';
 import { SignOptions } from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 import { UserService } from '../user/user.service';
 import { User } from '../user/entity/user.entity';
@@ -30,8 +34,11 @@ export class AuthService {
       return currentUser;
     }
 
-    const hashPassword = await bcrypt.hash(dto.password, +process.env.CRYPT_SALT || 10);
-    
+    const hashPassword = await bcrypt.hash(
+      dto.password,
+      +process.env.CRYPT_SALT || 10,
+    );
+
     return await this.userService.create({ ...dto, password: hashPassword });
   }
 
@@ -42,12 +49,13 @@ export class AuthService {
 
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_SECRET_REFRESH_KEY || 'secret123123',
-      expiresIn: (process.env.TOKEN_REFRESH_EXPIRE_TIME || '24h')  as SignOptions['expiresIn'],
+      expiresIn: (process.env.TOKEN_REFRESH_EXPIRE_TIME ||
+        '24h') as SignOptions['expiresIn'],
     });
 
-    return  { 
-      accessToken, 
-      refreshToken 
+    return {
+      accessToken,
+      refreshToken,
     };
   }
 
@@ -58,7 +66,10 @@ export class AuthService {
       throw new ForbiddenException('Incorrect login or password');
     }
 
-    const hasEqualPassword = await bcrypt.compare(dto.password, currentUser.password);
+    const hasEqualPassword = await bcrypt.compare(
+      dto.password,
+      currentUser.password,
+    );
 
     if (!hasEqualPassword) {
       throw new ForbiddenException('Incorrect login or password');

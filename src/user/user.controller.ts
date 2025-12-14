@@ -10,7 +10,13 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { IdParamDto } from '../common/dto/id-param.dto';

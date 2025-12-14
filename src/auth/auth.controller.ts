@@ -34,7 +34,10 @@ export class AuthController {
   @ApiOperation({ summary: 'Gets new pair of Access token and Refresh token' })
   @ApiResponse({ status: 200, type: Auth })
   @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
-  @ApiResponse({ status: 403, description: 'Refresh token is invalid or expired' })
+  @ApiResponse({
+    status: 403,
+    description: 'Refresh token is invalid or expired',
+  })
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(@Body() dto: RefreshDto) {

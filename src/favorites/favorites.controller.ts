@@ -8,7 +8,13 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { FavoritesService } from './favorites.service';
 import { FavoritesResponse } from './entities/favorite.entity';
