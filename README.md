@@ -11,6 +11,13 @@
 git clone https://github.com/funfordima/nodejs2025Q2-service
 ```
 
+## Project setup
+
+```
+- Create or copy .env file. Please use .env.example
+- Add environment variable to specify logging level. Example: LOG_LEVEL=debug
+```
+
 ## Installing NPM modules
 
 ```
@@ -60,7 +67,6 @@ npm run docker:down
 ```
 
 After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 in your browser Swagger documentation by typing http://localhost:4000/api/docs.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
@@ -86,10 +92,22 @@ To run all test with authorization
 npm run test:auth
 ```
 
+To run tests for refresh token
+
+```
+npm run test:refresh
+```
+
 To run only specific test suite with authorization
 
 ```
 npm run test:auth -- <path to suite>
+```
+
+### Check Loggin implementation
+
+```
+ - check folder "logs" in your app folder, file app[version].log
 ```
 
 ### Auto-fix and format
