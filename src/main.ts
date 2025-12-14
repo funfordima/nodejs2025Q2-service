@@ -1,14 +1,22 @@
 import 'dotenv/config';
 
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+import { AppModule } from './app.module';
+import { CustomLoggerService } from './common/custom-logger/custom-logger.service';
 
 const PORT: number = Number(process.env.PORT) || 4000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
+  const logger = app.get(CustomLoggerService);
+  
+  app.useLogger(logger);
 
   const config = new DocumentBuilder()
     .setTitle('Nestjs REST API')
@@ -46,5 +54,7 @@ async function bootstrap() {
   });
 
   await app.listen(PORT);
+
+  logger.debug(`This application is running on: ${await app.getUrl()}`, "Bootstrap");
 }
 bootstrap();
