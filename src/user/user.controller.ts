@@ -8,16 +8,26 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { IdParamDto } from '../common/dto/id-param.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entity/user.entity';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 ApiTags('Users');
+@ApiBearerAuth('jwt-auth')
+@UseGuards(AuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

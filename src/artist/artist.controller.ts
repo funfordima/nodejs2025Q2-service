@@ -8,16 +8,26 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { ArtistService } from './artist.service';
 import { Artist } from './entities/artist.entity';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { IdParamDto } from '../common/dto/id-param.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 ApiTags('Artists');
+@ApiBearerAuth('jwt-auth')
+@UseGuards(AuthGuard)
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}

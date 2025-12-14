@@ -8,16 +8,26 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { TrackService } from './track.service';
 import { IdParamDto } from '../common/dto/id-param.dto';
 import { Track } from './entity/track.entity';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 ApiTags('Tracks');
+@ApiBearerAuth('jwt-auth')
+@UseGuards(AuthGuard)
 @Controller('track')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}

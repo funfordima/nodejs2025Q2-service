@@ -11,7 +11,7 @@
   "scripts": {
     "prisma:migrate": "npx prisma migrate dev && npx prisma generate",
     "docker:dev": "docker-compose -f ./docker-compose.yml up --build",
-    "docker:build": "docker build -t funfordima/nest-api:latest -f Dockerfile .",
+    "docker:build": "docker build --platform linux/amd64,linux/arm64 -t funfordima/nest-api:latest -f Dockerfile .",
     "docker:prod": "docker run -d -p 4000:4000 --env-file .env -e DATABASE_URL=postgresql://postgres:root@host.docker.internal:5432/mydb?schema=public funfordima/nest-api:latest",
     "docker:down": "docker-compose down -v",
     "docker:db": "docker-compose -f ./docker-compose.yml up -d postgres",
@@ -25,7 +25,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest --testMatch \"<rootDir>/*.spec.ts\" --noStackTrace --runInBand",
+    "test": "cross-env TEST_MODE=auth jest --testMatch \"<rootDir>/*.spec.ts\" --noStackTrace --runInBand",
     "test:auth": "cross-env TEST_MODE=auth jest --testPathIgnorePatterns refresh.e2e.spec.ts --noStackTrace --runInBand",
     "test:refresh": "cross-env TEST_MODE=auth jest --testPathPattern refresh.e2e.spec.ts --noStackTrace --runInBand",
     "test:watch": "jest --watch",
